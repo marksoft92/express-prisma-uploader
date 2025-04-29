@@ -4,13 +4,32 @@ const { PrismaClient } = require('@prisma/client')
 const fs = require('fs-extra')
 const path = require('path')
 const QRCode = require('qrcode')
+const { nanoid } = require('nanoid')
 
 const prisma = new PrismaClient()
 
+// Funkcja pomocnicza do generowania unikalnego UID
+async function generateUniqueUid() {
+  let uid
+  let isUnique = false
+  
+  while (!isUnique) {
+    uid = nanoid(10) // generuj 10-znakowy UID
+    const existingUser = await prisma.user.findUnique({ where: { uid } })
+    if (!existingUser) {
+      isUnique = true
+    }
+  }
+  
+  return uid
+}
+
 exports.register = async (req, res) => {
-  const { email, password, uid } = req.body
+  const { email, password } = req.body
 
   try {
+    // Generuj unikalny uid
+    const uid = await generateUniqueUid()
     const hashed = await bcrypt.hash(password, 10)
 
     const user = await prisma.user.create({
@@ -26,7 +45,12 @@ exports.register = async (req, res) => {
     const qrPath = path.join(__dirname, '..', 'qr-codes', `${uid}.png`)
     await QRCode.toFile(qrPath, uploadUrl)
 
-    res.json({ message: 'Zarejestrowano', uid, qrCode: `/qr-codes/${uid}.png` })
+    res.json({ 
+      message: 'Zarejestrowano', 
+      uid, 
+      qrCode: `/qr-codes/${uid}.png`,
+      uploadUrl 
+    })
   } catch (err) {
     res.status(400).json({ error: err.message })
   }
