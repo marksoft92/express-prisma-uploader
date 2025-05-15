@@ -5,7 +5,8 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
-app.use('/uploads', express.static('uploads'))
+app.use('/uploads', express.static('/var/www/imprezowa-fota.pl/uploads'))
+
 app.use('/qr-codes', express.static('qr-codes'))
 
 app.use('/api/auth', require('./routes/auth'))
