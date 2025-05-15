@@ -26,7 +26,7 @@ router.post('/:uid', async (req, res) => {
   const user = await prisma.user.findUnique({ where: { uid } })
   if (!user) return res.status(404).json({ error: 'Użytkownik nie znaleziony' })
 
-  const upload = multer({ storage: getStorage(uid) }).array('files')
+  const upload = multer({ storage: getStorage(uid) }).array('file')
 
   upload(req, res, async (err) => {
     if (err) return res.status(500).json({ error: err.message })
@@ -51,7 +51,7 @@ router.post('/', auth, async (req, res) => {
   const user = await prisma.user.findUnique({ where: { uid } })
   if (!user) return res.status(404).json({ error: 'Użytkownik nie znaleziony' })
 
-  const upload = multer({ storage: getStorage(uid) }).array('files')
+  const upload = multer({ storage: getStorage(uid) }).array('file')
 
   upload(req, res, async (err) => {
     if (err) return res.status(500).json({ error: err.message })
