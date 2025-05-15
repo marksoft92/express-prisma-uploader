@@ -20,7 +20,9 @@ exports.getUserMedia = async (req, res) => {
 
     const fileUrls = mediaFiles.map(file => ({
       filename: file,
-      url: `/uploads/${uid}/${file}`
+    //   url: `/uploads/${uid}/${file}`
+    url: path.join(__dirname, '..', `uploads/${uid}`, `${file}`)
+
     }))
 
     res.json(fileUrls)
