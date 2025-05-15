@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs').promises
-const { prisma } = require('../prismaClient') // dostosuj ścieżkę do klienta Prisma
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
 
 exports.getUserMedia = async (req, res) => {
   try {
