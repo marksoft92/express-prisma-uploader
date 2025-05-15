@@ -12,4 +12,14 @@ model User {
   email    String  @unique
   password String
   uid      String  @unique
+   uploads  UploadInfo[]
+}
+
+model UploadInfo {
+  id         Int      @id @default(autoincrement())
+  filename   String
+  authorName String
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
 }
