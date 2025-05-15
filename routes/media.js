@@ -3,6 +3,6 @@ const router = express.Router()
 const auth = require('../middlewares/auth')
 const mediaController = require('../controllers/mediaController')
 
-router.get('/media', auth, mediaController.getUserMedia)
+router.get('/', auth, mediaController.getUserMedia)
 
 module.exports = router
