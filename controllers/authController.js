@@ -31,7 +31,7 @@ exports.register = async (req, res) => {
     // Generuj unikalny uid
     const uid = await generateUniqueUid()
     const hashed = await bcrypt.hash(password, 10)
-
+    const expiryDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
     const user = await prisma.user.create({
       data: {
          email,
@@ -39,7 +39,9 @@ exports.register = async (req, res) => {
           hashed,
            uid ,
            subscription: {
-            create: {} // puste, a Prisma wstawi defaulty z modelu
+            create: {
+              expiryDate
+            } // puste, a Prisma wstawi defaulty z modelu
           }
           }
     })
