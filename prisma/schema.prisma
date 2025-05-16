@@ -13,6 +13,7 @@ model User {
   password String
   uid      String  @unique
    uploads  UploadInfo[]
+ subscription Subscription?
 }
 
 model UploadInfo {
@@ -23,3 +24,23 @@ model UploadInfo {
   user       User     @relation(fields: [userId], references: [id])
   userId     Int
 }
+
+model Subscription {
+  id              Int      @id @default(autoincrement())
+user            User      @relation(fields: [userId], references: [id])
+  userId          Int      @unique
+
+  planName        String   @default("FREE")   
+  isActive        Boolean  @default(true)
+  isPaid          Boolean  @default(false)
+
+  maxStorageMB    Int      @default(500)      
+  expiryDate      DateTime
+
+  usedStorageMB   Int      @default(0)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+

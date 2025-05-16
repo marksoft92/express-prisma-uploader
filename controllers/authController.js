@@ -33,7 +33,15 @@ exports.register = async (req, res) => {
     const hashed = await bcrypt.hash(password, 10)
 
     const user = await prisma.user.create({
-      data: { email, password: hashed, uid }
+      data: {
+         email,
+          password: 
+          hashed,
+           uid ,
+           subscription: {
+            create: {} // puste, a Prisma wstawi defaulty z modelu
+          }
+          }
     })
 
     // utwórz katalog użytkownika
